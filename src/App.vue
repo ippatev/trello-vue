@@ -1,7 +1,7 @@
 <template>
   <div class="tasks">
     <h1>{{ title }}</h1>
-    <task-list>
+    <task-list ref="taskListEl">
       <task-list-item
         v-for="(item, idx) of items"
         :key="idx"
@@ -16,18 +16,32 @@
 import { ref } from "@vue/reactivity";
 import TaskList from "@/components/TaskList.vue";
 import TaskListItem from "@/components/TaskListItem.vue";
+import { useDraggable } from "./composable/useDraggable";
+
+const taskListEl = ref(null);
+const { getNextEl } = useDraggable();
 
 const title = "Trello";
 const items = ref(["one", "two", "three"]);
 
-const dragOverItem = ({ event }, idx) => {
-  console.log(idx);
-  // console.log("event ", event);
+const dragOverItem = ({ event }) => {
+  const activeEl = taskListEl.value.$el.querySelector(".selected");
   const currEl = event.target;
-  const nextEl =
-    currEl === currEl.nextElementSibling ? currEl.nextElementSibling : currEl;
-  console.log(nextEl);
-  // items.value[idx - 1] = currentItem;
+  const nextEl = getNextEl(event.clientX, currEl);
+
+  const isMoveable =
+    activeEl !== currEl && currEl.classList.contains(`tasks__item`);
+
+  if (!isMoveable) return;
+
+  if (
+    (nextEl && activeEl === nextEl.previousElementSibling) ||
+    activeEl === nextEl
+  ) {
+    return;
+  }
+
+  taskListEl.value.$el.insertBefore(activeEl, nextEl);
 };
 </script>
 
