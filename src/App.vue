@@ -2,7 +2,10 @@
   <div class="tasks">
     <h1>{{ title }}</h1>
     <task-list>
-      <task-list-item v-for="(item, idx) of items" :key="idx"
+      <task-list-item
+        v-for="(item, idx) of items"
+        :key="idx"
+        @dragover="dragOverItem($event, idx, item)"
         >{{ item }}
       </task-list-item>
     </task-list>
@@ -16,6 +19,16 @@ import TaskListItem from "@/components/TaskListItem.vue";
 
 const title = "Trello";
 const items = ref(["one", "two", "three"]);
+
+const dragOverItem = ({ event }, idx) => {
+  console.log(idx);
+  // console.log("event ", event);
+  const currEl = event.target;
+  const nextEl =
+    currEl === currEl.nextElementSibling ? currEl.nextElementSibling : currEl;
+  console.log(nextEl);
+  // items.value[idx - 1] = currentItem;
+};
 </script>
 
 <style>

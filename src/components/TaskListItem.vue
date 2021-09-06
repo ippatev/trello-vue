@@ -12,13 +12,13 @@
 </template>
 
 <script setup>
-import { ref, defineEmit } from "vue";
+import { ref, defineEmits } from "vue";
 
-const emit = defineEmit(["dragover"]);
-
+const emit = defineEmits(["dragover"]);
 const selected = ref(false);
+
 const dragOverHandler = (event) => {
-  emit(event);
+  emit("dragover", { event });
 };
 </script>
 
