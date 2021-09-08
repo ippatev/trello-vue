@@ -27,12 +27,14 @@ const items = ref(["one", "two", "three"]);
 const dragOverItem = ({ event }) => {
   const activeEl = taskListEl.value.$el.querySelector(".selected");
   const currEl = event.target;
-  const nextEl = getNextEl(event.clientX, currEl);
 
-  const isMoveable =
-    activeEl !== currEl && currEl.classList.contains(`tasks__item`);
+  const isMoveable = activeEl !== currEl;
 
-  if (!isMoveable) return;
+  if (!isMoveable) {
+    return;
+  }
+
+  const nextEl = getNextEl(event.clientY, currEl);
 
   if (
     (nextEl && activeEl === nextEl.previousElementSibling) ||
