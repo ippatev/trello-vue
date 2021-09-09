@@ -1,10 +1,14 @@
 <template>
   <div class="tasks__list">
+    <span>{{ msg }}</span>
     <slot></slot>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+// eslint-disable-next-line no-undef
+defineProps(["msg"]);
+</script>
 
 <style>
 .tasks__list {
